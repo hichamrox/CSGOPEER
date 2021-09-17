@@ -8,8 +8,15 @@ class Item {
   final double item_float;
   final String item_paintseed;
 
-
-  Item({ this.offer_init, this.offer_id, this.accepted, this.item_color, this.item_image, this.inspectlink, this.item_float, this.item_paintseed });
+  Item(
+      {this.offer_init,
+      this.offer_id,
+      this.accepted,
+      this.item_color,
+      this.item_image,
+      this.inspectlink,
+      this.item_float,
+      this.item_paintseed});
 
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
@@ -26,6 +33,6 @@ class Item {
 
   @override
   String toString() {
-    return 'Cases{id: $items_id, name: $offer_id}';
+    return 'Cases{id: 1, name: $offer_id}';
   }
 }

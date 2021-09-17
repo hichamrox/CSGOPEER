@@ -1,6 +1,12 @@
+import 'dart:async';
+
+import 'package:csgopeer/pages/web_view.dart';
+import 'package:csgopeer/services/login_service.dart';
 import 'package:flutter/material.dart';
 import 'package:csgopeer/pages/sell_page.dart';
 import 'package:csgopeer/pages/buy_page.dart';
+import 'package:flutter/services.dart';
+import 'package:uni_links/uni_links.dart' as UniLink;
 
 import 'balance_page.dart';
 
@@ -10,6 +16,8 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  String token;
+  bool isDone = false;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -241,8 +249,9 @@ class _WelcomePageState extends State<WelcomePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                //  UserLogin ulogin = new UserLogin();
-                                return BuyPage();
+                                var webViewPage = WebViewPage();
+                                checkDeepLink();
+                                return webViewPage;
                               },
                             ),
                           );
@@ -272,5 +281,33 @@ class _WelcomePageState extends State<WelcomePage> {
           //       children:
           //     )),
         ));
+  }
+
+  void func(String t) {
+    setState(() {
+      token = t;
+      isDone = true;
+      print(token);
+    });
+  }
+
+  Future checkDeepLink() async {
+    //StreamSubscription _sub;
+    try {
+      print("checkDeepLink");
+      await UniLink.getInitialLink();
+      UniLink.getUriLinksStream().listen((Uri uri) {
+        print('uri: $uri');
+        WidgetsFlutterBinding.ensureInitialized();
+      }, onError: (err) {
+        // Handle exception by warning the user their action did not succeed
+
+        print("onError");
+      });
+    } on PlatformException {
+      print("PlatformException");
+    } on Exception {
+      print('Exception thrown');
+    }
   }
 }
